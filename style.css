@@ -1,0 +1,120 @@
+.HUD,
+.stats {
+    align-items: center;
+    display: flex;
+    height: 300;
+    width: 735px;
+
+    border: 2px solid red;
+}
+
+.stats {
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    border: 2px solid black;
+}
+
+.additionalStats,
+.mainStats,
+.runeStats,
+.Items {
+    /* H:W ratio is 1:1.4 */
+    display: flex;
+    height: 100px;
+    width: 150px;
+    border: 1px solid green;
+
+}
+
+.championIcon {
+    /* H:W ratio is 1:1 */
+    height: 100px;
+    width: 100px;
+    border: 1px solid green;
+    border-radius: 50%;
+}
+
+.ChampionAbilities {
+    /* H:W ratio is 1:3.22 */
+    height: 100px;
+    width: 322px;
+    border: 1px solid green;
+}
+
+.abilities {
+    display: flex;
+    width: 270px;
+    height: 40px;
+    margin-left: 26px;
+    margin-top: 10px;
+    border: 1px solid green;
+}
+
+.passive,
+.spell1,
+.spell2 {
+    border: 1px solid green;
+    height: 30px;
+    width: 30px;
+}
+
+.q,
+.w,
+.e,
+.r {
+    border: 1px solid green;
+    height: 40px;
+    width: 40px;
+}
+
+.hp {
+    /* H:W ratio 1:22 */
+    height: 10px;
+    width: 270px;
+    border: 1px solid green;
+    margin-left: 26px;
+    margin-top: 10px;
+    margin-bottom: 2px;
+}
+
+.resource {
+    /* H:W ratio 1:22 */
+    height: 10px;
+    width: 270px;
+    border: 1px solid green;
+    margin-left: 26px;
+    margin-bottom: 10px;
+}
+
+.items {
+    display: flex;
+    flex-direction: column;
+}
+
+.item123,
+.item456 {
+    display: flex;
+}
+
+.item1,
+.item2,
+.item3,
+.item4,
+.item5,
+.item6 {
+    height: 30px;
+    width: 30px;
+    border: 1px solid green;
+
+}
+
+.right-stats,
+.left-stats {
+    gap: 7px;
+    display: flex;
+    flex-direction: column;
+    height: 25px;
+    width: 75px;
+    border: 1px solid green;
+}
