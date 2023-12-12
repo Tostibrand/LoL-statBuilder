@@ -141,16 +141,30 @@ body {
 }
 
 .right-stats,
+.right-statsValue,
+.left-statsValue,
 .left-stats {
     gap: 10px;
     display: flex;
     flex-direction: column;
-    height: 25px;
-    width: 75px;
+    height: 15px;
+    width: 15px;
+    margin-left: 5px;
     /* border: 1px solid green; */
+}
+
+.left-statsValue {
+    margin-right: 40px;
+}
+
+.percentMRpen,
+.percentARpen {
+    font-size: 0.75em;
 }
 
 .statimg {
     height: 15px;
     width: 15px;
+    margin-top: 1px;
+
 }
