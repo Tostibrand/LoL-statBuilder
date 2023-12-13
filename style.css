@@ -21,6 +21,7 @@ body {
     width: fit-content;
     flex-direction: column;
     border: 2px solid black;
+    align-items: center;
 }
 
 .additionalStats,
@@ -32,7 +33,7 @@ body {
     height: 100px;
     width: 150px;
     border: 1px solid green;
-
+    padding-top: 5px;
 }
 
 .championIcon {
@@ -151,7 +152,6 @@ body {
 .goldCost {
     border: 1px solid green;
     height: 20px;
-    px;
 }
 
 .right-stats,
@@ -191,7 +191,7 @@ body {
 .statimg {
     height: 215px;
     width: 12px;
-    margin-top: 5px;
+    margin-top: 3px;
 
 }
 
