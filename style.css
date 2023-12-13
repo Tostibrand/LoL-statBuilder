@@ -200,6 +200,19 @@ body {
     width: 20px;
 }
 
+.statimg2:hover,
+.statimg:hover {
+    scale: 1.2;
+}
+
+.onHitIcon {
+    scale: 1.45;
+}
+
+.onHitIcon:hover {
+    scale: 1.75;
+}
+
 .shop {
     display: flex;
     flex-direction: column;
