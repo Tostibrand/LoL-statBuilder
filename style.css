@@ -6,6 +6,13 @@ body {
     color: white;
 }
 
+#myData {
+    height: 100px;
+    width: 100px;
+    border: 1px solid green;
+    color: white;
+}
+
 .HUD,
 .stats {
     align-items: center;
