@@ -201,19 +201,4 @@ function fetchChampionStats(championName) {
 }
 
 
-
-
-
-
-
-
-// let output = document.querySelector("#output")
-// let hp = document.querySelector("#hp")
-// let mana = document.querySelector("#mana")
-// let HPregen = document.querySelector("#HPregen")
-// let MPregen = document.querySelector("#MPregen")
-// let movespeed = document.querySelector("#movespeed")
-// let attackdamage = document.querySelector("#attackdamage")
-// let attackrange = document.querySelector("#attackrange")
-
-
+fetchChampionStats(prompt('Type your champion with a capital!'))
