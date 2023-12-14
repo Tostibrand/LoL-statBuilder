@@ -199,6 +199,15 @@ function fetchChampionStats(championName) {
     fetchChampionAttackSpeed(championName);
     fetchChampionMagicResist(championName);
 }
+const input = document.querySelector(`#championInput`);
+input.addEventListener(`click`, () => { searchChampion() })
 
+function searchChampion() {
+    championName = prompt("Please enter a champion name");
+    capitalizedString = capitalizeFirstLetter(championName);
+    fetchChampionStats(capitalizedString);
+}
 
-fetchChampionStats(prompt('Type your champion with a capital!'))
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
