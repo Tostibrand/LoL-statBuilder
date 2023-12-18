@@ -2,6 +2,7 @@ const version = '13.24.1';
 const baseUrl = `https://ddragon.leagueoflegends.com/cdn/${version}`;
 const championDataUrl = `${baseUrl}/data/en_US/champion.json`;
 
+
 async function fetchData(championName, statKey, element) {
     try {
         const response = await fetch(championDataUrl);
@@ -12,7 +13,54 @@ async function fetchData(championName, statKey, element) {
         console.error('Error fetching champion data:', error);
     }
 }
+// Passive icon path
+async function fetchPassiveIconPath(championName, statKey) {
+    try {
+        const individualChampionDataUrl = `${baseUrl}/data/en_US/champion/${championName}.json`;
+        const response = await fetch(individualChampionDataUrl);
+        const data = await response.json();
+        const stat = data.data[championName].passive.image[statKey];
+        const championPassiveIcon = document.getElementById('championPassiveIcon');
+        championPassiveIcon.src = `${baseUrl}/img/passive/${stat}`;
+    } catch (error) {
+        console.error('Error fetching champion data:', error);
+    }
+}
+// Abilities icon path
+async function fetchAbilityIconPath(championName, spellIndex, statKey, iconElementId) {
+    try {
+        const individualChampionDataUrl = `${baseUrl}/data/en_US/champion/${championName}.json`;
+        const response = await fetch(individualChampionDataUrl);
+        const data = await response.json();
+        const stat = data.data[championName].spells[spellIndex].image[statKey];
+        const championAbilityIcon = document.getElementById(iconElementId);
+        championAbilityIcon.src = `${baseUrl}/img/spell/${stat}`;
+    } catch (error) {
+        console.error('Error fetching champion data:', error);
+    }
+}
 
+// Q
+async function fetchQ_AbilityIconPath(championName, statKey) {
+    await fetchAbilityIconPath(championName, 0, statKey, 'championQIcon');
+}
+
+// W
+async function fetchW_AbilityIconPath(championName, statKey) {
+    await fetchAbilityIconPath(championName, 1, statKey, 'championWIcon');
+}
+
+// E
+async function fetchE_AbilityIconPath(championName, statKey) {
+    await fetchAbilityIconPath(championName, 2, statKey, 'championEIcon');
+}
+
+// R
+async function fetchR_AbilityIconPath(championName, statKey) {
+    await fetchAbilityIconPath(championName, 3, statKey, 'championRIcon');
+}
+
+// Champion icon path
 function fetchChampionSquareAsset(championName) {
     const championIcon = document.getElementById('championIcon');
     championIcon.src = `${baseUrl}/img/champion/${championName}.png`;
@@ -30,6 +78,11 @@ function fetchChampionStats(championName) {
     fetchData(championName, 'attackspeed', attackspeed);
     fetchData(championName, 'spellblock', magicresist);
     fetchChampionSquareAsset(championName);
+    fetchPassiveIconPath(championName, 'full');
+    fetchQ_AbilityIconPath(championName, 'full');
+    fetchW_AbilityIconPath(championName, 'full');
+    fetchE_AbilityIconPath(championName, 'full');
+    fetchR_AbilityIconPath(championName, 'full');
 }
 
 const input = document.querySelector('#championInput');
@@ -46,217 +99,3 @@ function searchChampion() {
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
-
-
-
-// function fetchChampionMovespeed(championName) {
-//     fetch('https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json', {
-//         method: 'GET',
-//         headers: {
-//             'Accept': 'application/json',
-//         },
-//     })
-//         .then(response => response.json())
-//         .then(response => {
-//             movespeed.innerHTML = "";
-//             const stat = response.data[championName].stats.movespeed;
-//             movespeed.append(JSON.stringify(stat, null, 2));
-
-//         })
-//         .catch(error => {
-//             console.error('Error fetching champion data:', error);
-//         });
-// }
-// function fetchChampionHP(championName) {
-//     fetch('https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json', {
-//         method: 'GET',
-//         headers: {
-//             'Accept': 'application/json',
-//         },
-//     })
-//         .then(response => response.json())
-//         .then(response => {
-//             hp.innerHTML = "";
-//             const stat = response.data[championName].stats.hp;
-//             hp.append(JSON.stringify(stat, null, 2));
-
-//         })
-//         .catch(error => {
-//             console.error('Error fetching champion data:', error);
-//         });
-// }
-// function fetchChampionMP(championName) {
-//     fetch('https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json', {
-//         method: 'GET',
-//         headers: {
-//             'Accept': 'application/json',
-//         },
-//     })
-//         .then(response => response.json())
-//         .then(response => {
-//             mana.innerHTML = "";
-//             const stat = response.data[championName].stats.mp;
-//             mana.append(JSON.stringify(stat, null, 2));
-
-//         })
-//         .catch(error => {
-//             console.error('Error fetching champion data:', error);
-//         });
-// }
-// function fetchChampionHPregen(championName) {
-//     fetch('https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json', {
-//         method: 'GET',
-//         headers: {
-//             'Accept': 'application/json',
-//         },
-//     })
-//         .then(response => response.json())
-//         .then(response => {
-//             HPregen.innerHTML = "";
-//             const stat = response.data[championName].stats.hpregen;
-//             HPregen.append(JSON.stringify(stat, null, 2));
-
-//         })
-//         .catch(error => {
-//             console.error('Error fetching champion data:', error);
-//         });
-// }
-// function fetchChampionMPregen(championName) {
-//     fetch('https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json', {
-//         method: 'GET',
-//         headers: {
-//             'Accept': 'application/json',
-//         },
-//     })
-//         .then(response => response.json())
-//         .then(response => {
-//             MPregen.innerHTML = "";
-//             const stat = response.data[championName].stats.mpregen;
-//             MPregen.append(JSON.stringify(stat, null, 2));
-
-//         })
-//         .catch(error => {
-//             console.error('Error fetching champion data:', error);
-//         });
-// }
-// function fetchChampionAD(championName) {
-//     fetch('https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json', {
-//         method: 'GET',
-//         headers: {
-//             'Accept': 'application/json',
-//         },
-//     })
-//         .then(response => response.json())
-//         .then(response => {
-//             attackdamage.innerHTML = "";
-//             const stat = response.data[championName].stats.attackdamage;
-//             attackdamage.append(JSON.stringify(stat, null, 2));
-
-//         })
-//         .catch(error => {
-//             console.error('Error fetching champion data:', error);
-//         });
-// }
-// function fetchChampionAttackRange(championName) {
-//     fetch('https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json', {
-//         method: 'GET',
-//         headers: {
-//             'Accept': 'application/json',
-//         },
-//     })
-//         .then(response => response.json())
-//         .then(response => {
-//             attackrange.innerHTML = "";
-//             const stat = response.data[championName].stats.attackrange;
-//             attackrange.append(JSON.stringify(stat, null, 2));
-
-//         })
-//         .catch(error => {
-//             console.error('Error fetching champion data:', error);
-//         });
-// }
-// function fetchChampionArmor(championName) {
-//     fetch('https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json', {
-//         method: 'GET',
-//         headers: {
-//             'Accept': 'application/json',
-//         },
-//     })
-//         .then(response => response.json())
-//         .then(response => {
-//             armor.innerHTML = "";
-//             const stat = response.data[championName].stats.armor;
-//             armor.append(JSON.stringify(stat, null, 2));
-
-//         })
-//         .catch(error => {
-//             console.error('Error fetching champion data:', error);
-//         });
-// }
-// function fetchChampionAttackSpeed(championName) {
-//     fetch('https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json', {
-//         method: 'GET',
-//         headers: {
-//             'Accept': 'application/json',
-//         },
-//     })
-//         .then(response => response.json())
-//         .then(response => {
-//             attackspeed.innerHTML = "";
-//             const stat = response.data[championName].stats.attackspeed;
-//             attackspeed.append(JSON.stringify(stat, null, 2));
-
-//         })
-//         .catch(error => {
-//             console.error('Error fetching champion data:', error);
-//         });
-// }
-// function fetchChampionMagicResist(championName) {
-//     fetch('https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json', {
-//         method: 'GET',
-//         headers: {
-//             'Accept': 'application/json',
-//         },
-//     })
-//         .then(response => response.json())
-//         .then(response => {
-//             magicresist.innerHTML = "";
-//             const stat = response.data[championName].stats.spellblock;
-//             magicresist.append(JSON.stringify(stat, null, 2));
-
-//         })
-//         .catch(error => {
-//             console.error('Error fetching champion data:', error);
-//         });
-// }
-// function fetchChampionSquareAsset(championName) {
-//     const ChampionIcon = document.getElementById('championIcon')
-//     ChampionIcon.src = "";
-//     ChampionIcon.src = 'https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/' + championName + '.png'
-// }
-// function fetchChampionStats(championName) {
-
-//     fetchChampionHP(championName);
-//     fetchChampionMovespeed(championName);
-//     fetchChampionMP(championName);
-//     fetchChampionHPregen(championName);
-//     fetchChampionMPregen(championName);
-//     fetchChampionSquareAsset(championName);
-//     fetchChampionAD(championName);
-//     fetchChampionAttackRange(championName);
-//     fetchChampionArmor(championName);
-//     fetchChampionAttackSpeed(championName);
-//     fetchChampionMagicResist(championName);
-// }
-// const input = document.querySelector(`#championInput`);
-// input.addEventListener(`click`, () => { searchChampion() })
-
-// function searchChampion() {
-//     championName = prompt("Please enter a champion name");
-//     capitalizedString = capitalizeFirstLetter(championName);
-//     fetchChampionStats(capitalizedString);
-// }
-
-// function capitalizeFirstLetter(string) {
-//     return string.charAt(0).toUpperCase() + string.slice(1);
-// }
