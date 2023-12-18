@@ -13,8 +13,10 @@ let attackdamageperlevel = null;
 let attackspeedperlevel = null;
 let championLevel = null;
 let hpatlevel = null;
+let mpatlevel = null;
 let hpbase = null;
-console.log(hpatlevel)
+let mpbase = null;
+
 
 
 
@@ -25,13 +27,52 @@ async function fetchData(championName, statKey, element) {
         const stat = data.data[championName].stats[statKey];
         element.innerHTML = JSON.stringify(stat, null, 2);
         switch (statKey) {
-            case "hp": hpbase = stat
+            case "mp": mpbase = stat;
+                break;
+            case "hp": hpbase = stat;
+                break;
         }
     } catch (error) {
         console.error('Error fetching champion data:', error);
     }
 }
+
+
+// ------------------------------------------------------------TEST
+// 
+// async function fetchChampionStatPerLevel(championName, statKey) {
+//     try {
+//         const response = await fetch(championDataUrl);
+//         const data = await response.json();
+//         const stat = data.data[championName].stats[statKey];
+//         console.log(stat);
+
+//         // Assign the stat to the corresponding variable based on statKey
+//         switch (statKey) {
+//             case 'hpperlevel':
+//                 hpperlevel = stat;
+//                 break;
+//             case 'mpperlevel':
+//                 mpperlevel = stat;
+//                 break;
+//             // Add more cases if needed for other stats
+//         }
+//     } catch (error) {
+//         console.error('Error fetching champion data:', error);
+//     }
+// }
+
+// Example usage:
+// await fetchChampionStatPerLevel('ChampionName', 'hpperlevel');
+// await fetchChampionStatPerLevel('ChampionName', 'mpperlevel');
+
+// ------------------------------------------------------------TEST
+// 
 // fetch data per lvl
+
+
+
+
 async function fetchDataPerlvl(championName, statKey) {
     try {
         const response = await fetch(championDataUrl);
@@ -57,6 +98,26 @@ async function fetch_hpperlevel(championName) {
         console.error('Error fetching champion data:', error);
     }
 }
+async function fetch_mpperlevel(championName) {
+    try {
+        const response = await fetch(championDataUrl);
+        const data = await response.json();
+        const stat = data.data[championName].stats.mpperlevel;
+        console.log(stat);
+        mpperlevel = stat;
+
+
+    } catch (error) {
+        console.error('Error fetching champion data:', error);
+    }
+}
+
+
+
+
+
+
+
 // Passive icon path
 async function fetchPassiveIconPath(championName, statKey) {
     try {
@@ -121,8 +182,9 @@ function fetchChampionStats(championName) {
     fetchData(championName, 'armor', armor);
     fetchData(championName, 'attackspeed', attackspeed);
     fetchData(championName, 'spellblock', magicresist);
-    // fetchDataPerlvl(championName, 'hpperlevel');
-    fetch_hpperlevel(championName)
+    fetchDataPerlvl(championName, 'hpperlevel');
+    fetch_hpperlevel(championName);
+    fetch_mpperlevel(championName);
     fetchDataPerlvl(championName, 'mpperlevel');
     fetchDataPerlvl(championName, 'armorperlevel');
     fetchDataPerlvl(championName, 'spellblockperlevel');
@@ -163,7 +225,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Replace this with your logic to fetch and display the champion level
         console.log(`Champion level is ${championLevel}`);
         hpatlevel = hpbase + (hpperlevel * championLevel) - hpperlevel;
+        mpatlevel = mpbase + (mpperlevel * championLevel) - mpperlevel;
         hp.innerHTML = hpatlevel;
+        mana.innerHTML = mpatlevel;
         console.log(hpatlevel);
     }
 });

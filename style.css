@@ -96,8 +96,10 @@ body {
 
 .passive,
 .spell1,
-.spell2 {
-    border: 3px solid black;
+.spell2,
+.championPassiveIcon {
+    margin: 2px;
+    border: 1.5px solid gold;
     height: 30px;
     width: 30px;
     text-align: center;
@@ -107,7 +109,8 @@ body {
 .championWIcon,
 .championEIcon,
 .championRIcon {
-    border: 3px solid black;
+    margin-left: 4px;
+    border: 1.5px solid gold;
     height: 40px;
     width: 40px;
     text-align: center;
