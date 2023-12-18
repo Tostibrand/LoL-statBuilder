@@ -2,6 +2,21 @@ const version = '13.24.1';
 const baseUrl = `https://ddragon.leagueoflegends.com/cdn/${version}`;
 const championDataUrl = `${baseUrl}/data/en_US/champion.json`;
 
+let hpperlevel = null;
+let mpperlevel = null;
+let armorperlevel = null;
+let spellblockperlevel = null;
+let hpregenperlevel = null;
+let mpregenperlevel = null;
+let critperlevel = null;
+let attackdamageperlevel = null;
+let attackspeedperlevel = null;
+let championLevel = null;
+let hpatlevel = null;
+let hpbase = null;
+console.log(hpatlevel)
+
+
 
 async function fetchData(championName, statKey, element) {
     try {
@@ -9,6 +24,35 @@ async function fetchData(championName, statKey, element) {
         const data = await response.json();
         const stat = data.data[championName].stats[statKey];
         element.innerHTML = JSON.stringify(stat, null, 2);
+        switch (statKey) {
+            case "hp": hpbase = stat
+        }
+    } catch (error) {
+        console.error('Error fetching champion data:', error);
+    }
+}
+// fetch data per lvl
+async function fetchDataPerlvl(championName, statKey) {
+    try {
+        const response = await fetch(championDataUrl);
+        const data = await response.json();
+        const stat = data.data[championName].stats[statKey];
+        console.log(stat);
+
+
+    } catch (error) {
+        console.error('Error fetching champion data:', error);
+    }
+}
+async function fetch_hpperlevel(championName) {
+    try {
+        const response = await fetch(championDataUrl);
+        const data = await response.json();
+        const stat = data.data[championName].stats.hpperlevel;
+        console.log(stat);
+        hpperlevel = stat;
+
+
     } catch (error) {
         console.error('Error fetching champion data:', error);
     }
@@ -77,6 +121,16 @@ function fetchChampionStats(championName) {
     fetchData(championName, 'armor', armor);
     fetchData(championName, 'attackspeed', attackspeed);
     fetchData(championName, 'spellblock', magicresist);
+    // fetchDataPerlvl(championName, 'hpperlevel');
+    fetch_hpperlevel(championName)
+    fetchDataPerlvl(championName, 'mpperlevel');
+    fetchDataPerlvl(championName, 'armorperlevel');
+    fetchDataPerlvl(championName, 'spellblockperlevel');
+    fetchDataPerlvl(championName, 'hpregenperlevel');
+    fetchDataPerlvl(championName, 'mpregenperlevel');
+    fetchDataPerlvl(championName, 'critperlevel');
+    fetchDataPerlvl(championName, 'attackdamageperlevel');
+    fetchDataPerlvl(championName, 'attackspeedperlevel');
     fetchChampionSquareAsset(championName);
     fetchPassiveIconPath(championName, 'full');
     fetchQ_AbilityIconPath(championName, 'full');
@@ -87,6 +141,33 @@ function fetchChampionStats(championName) {
 
 const input = document.querySelector('#championInput');
 input.addEventListener('click', () => searchChampion());
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Wait for the DOM to be fully loaded before adding event listeners
+
+    // Get the select element
+    const lvlIndicator = document.getElementById('lvlIndicator');
+
+    // Add a change event listener to the select element
+    lvlIndicator.addEventListener('change', function () {
+        // Get the selected value
+        const selectedLevel = lvlIndicator.value;
+        championLevel = parseInt(selectedLevel);
+
+        // Call your function with the selected value
+        fetchChampionLevel(selectedLevel);
+    });
+
+    // Your function to fetch and display champion icon
+    function fetchChampionLevel(championLevel) {
+        // Replace this with your logic to fetch and display the champion level
+        console.log(`Champion level is ${championLevel}`);
+        hpatlevel = hpbase + (hpperlevel * championLevel) - hpperlevel;
+        hp.innerHTML = hpatlevel;
+        console.log(hpatlevel);
+    }
+});
+
 
 function searchChampion() {
     const championName = prompt('Please enter a champion name');

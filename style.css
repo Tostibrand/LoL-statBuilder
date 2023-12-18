@@ -67,13 +67,13 @@ body {
     margin-left: 230px;
     position: absolute;
     height: 20px;
-    width: 20px;
     border: 1px solid green;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     font-size: 18px;
     font-weight: 900;
     color: white;
     text-align: center;
+    font-size: 12px;
     background-color: black;
 
 }
@@ -82,7 +82,7 @@ body {
     /* H:W ratio is 1:3.22 */
     height: 120px;
     width: 322px;
-    border: 1px solid green;
+    /* border: 1px solid green; */
 }
 
 .abilities {
@@ -91,7 +91,7 @@ body {
     height: 40px;
     margin-left: 26px;
     margin-top: 10px;
-    border: 1px solid green;
+    /* border: 1px solid green; */
 }
 
 .passive,
@@ -108,8 +108,6 @@ body {
 .championEIcon,
 .championRIcon {
     border: 3px solid black;
-
-    gap: 5px;
     height: 40px;
     width: 40px;
     text-align: center;
