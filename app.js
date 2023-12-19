@@ -1,8 +1,10 @@
 const version = '13.24.1';
 const baseUrl = `https://ddragon.leagueoflegends.com/cdn/${version}`;
 const championDataUrl = `${baseUrl}/data/en_US/champion.json`;
+const itemDataUrl = `${baseUrl}/data/en_US/item.json`;
 let champions;
-let selectedChamp
+let items;
+let selectedChamp;
 
 // -----------------------------------------------------------------
 ///////////////////////////////     GLOBALLY DECLARED VARIABLES      /////////////////////////////////////
@@ -293,19 +295,13 @@ function fetchChampionStats(championName) {
 // input.addEventListener('click', () => searchChampion());
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Wait for the DOM to be fully loaded before adding event listeners
 
-    // Get the select element
     const lvlIndicator = document.getElementById('lvlIndicator');
     const championSelect = document.getElementById('championSelect');
 
-    // Add a change event listener to the select element
     lvlIndicator.addEventListener('change', function () {
-        // Get the selected value
         const selectedLevel = lvlIndicator.value;
         championLevel = parseInt(selectedLevel);
-
-        // Call your function with the selected value
         fetchChampionLevel(selectedLevel);
     });
 
@@ -402,3 +398,20 @@ function populateSelect() {
     });
 }
 
+fetch(itemDataUrl)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Extract champion names from the response
+        items = Object.keys(data.data).map(itemKey => data.data[itemKey]);
+
+        // Now 'champions' is an array containing all the champion id's
+        // console.log(champions);
+
+        // Call the loop function here or use champions as needed
+    })
+    .catch(error => console.error("Error fetching data:", error));
