@@ -16,10 +16,18 @@ let championLevel = null;
 let hpatlevel = null;
 let mpatlevel = null;
 let armoratlevel = null;
+let spellblockatlevel = null;
+let attackdamageatlevel = null;
+let attackspeedatlevel = null;
 
 let hpbase = null;
 let mpbase = null;
 let armorbase = null;
+let spellblockbase = null;
+let attackdamagebase = null;
+let attackspeedbase = null;
+
+
 
 
 
@@ -36,6 +44,12 @@ async function fetchData(championName, statKey, element) {
             case "hp": hpbase = stat;
                 break;
             case "armor": armorbase = stat;
+                break;
+            case "spellblock": spellblockbase = stat;
+                break;
+            case "attackdamage": attackdamagebase = stat;
+                break;
+            case "attackspeed": attackspeedbase = stat;
                 break;
         }
     } catch (error) {
@@ -130,9 +144,45 @@ async function fetch_armorperlevel(championName) {
         console.error('Error fetching champion data:', error);
     }
 }
+async function fetch_spellblockperlevel(championName) {
+    try {
+        const response = await fetch(championDataUrl);
+        const data = await response.json();
+        const stat = data.data[championName].stats.spellblockperlevel;
+        console.log(stat);
+        spellblockperlevel = stat;
 
 
+    } catch (error) {
+        console.error('Error fetching champion data:', error);
+    }
+}
+async function fetch_attackdamageperlevel(championName) {
+    try {
+        const response = await fetch(championDataUrl);
+        const data = await response.json();
+        const stat = data.data[championName].stats.attackdamageperlevel;
+        console.log(stat);
+        attackdamageperlevel = stat;
 
+
+    } catch (error) {
+        console.error('Error fetching champion data:', error);
+    }
+}
+async function fetch_attackspeedperlevel(championName) {
+    try {
+        const response = await fetch(championDataUrl);
+        const data = await response.json();
+        const stat = data.data[championName].stats.attackspeedperlevel;
+        console.log(stat);
+        attackspeedperlevel = stat;
+
+
+    } catch (error) {
+        console.error('Error fetching champion data:', error);
+    }
+}
 
 
 
@@ -202,9 +252,16 @@ function fetchChampionStats(championName) {
     fetchData(championName, 'attackspeed', attackspeed);
     fetchData(championName, 'spellblock', magicresist);
     fetchDataPerlvl(championName, 'hpperlevel');
+
+
     fetch_hpperlevel(championName);
     fetch_mpperlevel(championName);
     fetch_armorperlevel(championName);
+    fetch_spellblockperlevel(championName);
+    fetch_attackdamageperlevel(championName);
+    fetch_attackspeedperlevel(championName);
+
+
     fetchDataPerlvl(championName, 'mpperlevel');
     fetchDataPerlvl(championName, 'armorperlevel');
     fetchDataPerlvl(championName, 'spellblockperlevel');
@@ -244,13 +301,24 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchChampionLevel(championLevel) {
         // Replace this with your logic to fetch and display the champion level
         console.log(`Champion level is ${championLevel}`);
+
         hpatlevel = Math.round(hpbase + (hpperlevel * championLevel) - hpperlevel);
         mpatlevel = Math.round(mpbase + (mpperlevel * championLevel) - mpperlevel);
         armoratlevel = Math.round(armorbase + (armorperlevel * championLevel) - armorperlevel);
+        spellblockatlevel = Math.round(spellblockbase + (spellblockperlevel * championLevel) - spellblockperlevel);
+        attackdamageatlevel = Math.round(attackdamagebase + (attackdamageperlevel * championLevel) - attackdamageperlevel);
+        // BaseAS x (1 + per_level_AS x (level-1) + AS_from_other_sources)
+        attackspeedatlevel = attackspeedbase * (1 + (attackspeedperlevel / 100) * (championLevel - 1));
+        roundedattackspeedatlevel = attackspeedatlevel.toFixed(2);
+
         hp.innerHTML = hpatlevel;
         mana.innerHTML = mpatlevel;
         armor.innerHTML = armoratlevel;
-        console.log(armoratlevel);
+        magicresist.innerHTML = spellblockatlevel;
+        attackdamage.innerHTML = attackdamageatlevel;
+        attackspeed.innerHTML = roundedattackspeedatlevel;
+
+
     }
 });
 
