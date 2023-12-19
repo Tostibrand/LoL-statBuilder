@@ -12,10 +12,14 @@ let critperlevel = null;
 let attackdamageperlevel = null;
 let attackspeedperlevel = null;
 let championLevel = null;
+
 let hpatlevel = null;
 let mpatlevel = null;
+let armoratlevel = null;
+
 let hpbase = null;
 let mpbase = null;
+let armorbase = null;
 
 
 
@@ -30,6 +34,8 @@ async function fetchData(championName, statKey, element) {
             case "mp": mpbase = stat;
                 break;
             case "hp": hpbase = stat;
+                break;
+            case "armor": armorbase = stat;
                 break;
         }
     } catch (error) {
@@ -111,6 +117,19 @@ async function fetch_mpperlevel(championName) {
         console.error('Error fetching champion data:', error);
     }
 }
+async function fetch_armorperlevel(championName) {
+    try {
+        const response = await fetch(championDataUrl);
+        const data = await response.json();
+        const stat = data.data[championName].stats.armorperlevel;
+        console.log(stat);
+        armorperlevel = stat;
+
+
+    } catch (error) {
+        console.error('Error fetching champion data:', error);
+    }
+}
 
 
 
@@ -185,6 +204,7 @@ function fetchChampionStats(championName) {
     fetchDataPerlvl(championName, 'hpperlevel');
     fetch_hpperlevel(championName);
     fetch_mpperlevel(championName);
+    fetch_armorperlevel(championName);
     fetchDataPerlvl(championName, 'mpperlevel');
     fetchDataPerlvl(championName, 'armorperlevel');
     fetchDataPerlvl(championName, 'spellblockperlevel');
@@ -224,11 +244,13 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchChampionLevel(championLevel) {
         // Replace this with your logic to fetch and display the champion level
         console.log(`Champion level is ${championLevel}`);
-        hpatlevel = hpbase + (hpperlevel * championLevel) - hpperlevel;
-        mpatlevel = mpbase + (mpperlevel * championLevel) - mpperlevel;
+        hpatlevel = Math.round(hpbase + (hpperlevel * championLevel) - hpperlevel);
+        mpatlevel = Math.round(mpbase + (mpperlevel * championLevel) - mpperlevel);
+        armoratlevel = Math.round(armorbase + (armorperlevel * championLevel) - armorperlevel);
         hp.innerHTML = hpatlevel;
         mana.innerHTML = mpatlevel;
-        console.log(hpatlevel);
+        armor.innerHTML = armoratlevel;
+        console.log(armoratlevel);
     }
 });
 
