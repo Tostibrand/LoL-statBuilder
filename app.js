@@ -1,6 +1,8 @@
 const version = '13.24.1';
 const baseUrl = `https://ddragon.leagueoflegends.com/cdn/${version}`;
 const championDataUrl = `${baseUrl}/data/en_US/champion.json`;
+let champions;
+let selectedChamp
 
 // -----------------------------------------------------------------
 ///////////////////////////////     GLOBALLY DECLARED VARIABLES      /////////////////////////////////////
@@ -188,9 +190,6 @@ async function fetch_mpregenperlevel(championName) {
 ////////////////////////////       CHAMPION ABILITY ICONS       ////////////////////////
 // -----------------------------------------------------------------
 
-
-
-
 // Passive icon path
 async function fetchPassiveIconPath(championName, statKey) {
     try {
@@ -290,14 +289,15 @@ function fetchChampionStats(championName) {
 /////////////////////////     EVENTLISTENERS      /////////////////////////////////
 // -----------------------------------------------------------------
 
-const input = document.querySelector('#championInput');
-input.addEventListener('click', () => searchChampion());
+// const input = document.querySelector('#championInput');
+// input.addEventListener('click', () => searchChampion());
 
 document.addEventListener('DOMContentLoaded', function () {
     // Wait for the DOM to be fully loaded before adding event listeners
 
     // Get the select element
     const lvlIndicator = document.getElementById('lvlIndicator');
+    const championSelect = document.getElementById('championSelect');
 
     // Add a change event listener to the select element
     lvlIndicator.addEventListener('change', function () {
@@ -308,6 +308,14 @@ document.addEventListener('DOMContentLoaded', function () {
         // Call your function with the selected value
         fetchChampionLevel(selectedLevel);
     });
+
+    championSelect.addEventListener('change', function () {
+        const selectedchampion = championSelect.value;
+        championName = selectedchampion;
+
+        fetchChampionStats(championName);
+
+    })
     // -----------------------------------------------------------------
     ////////////////////////         CALCULATIONS FOR PER LEVEL STATS    /////////////////////////////
     // -----------------------------------------------------------------
@@ -346,14 +354,51 @@ document.addEventListener('DOMContentLoaded', function () {
 /////////////////////////////     HELPERS    //////////////////////////////
 // -----------------------------------------------------------------
 
-function searchChampion() {
-    const championName = prompt('Please enter a champion name');
-    if (championName) {
-        const capitalizedString = capitalizeFirstLetter(championName);
-        fetchChampionStats(capitalizedString);
-    }
-}
+// function searchChampion() {
+//     const championName = prompt('Please enter a champion name');
+//     if (championName) {
+//         const capitalizedString = capitalizeFirstLetter(championName);
+//         fetchChampionStats(capitalizedString);
+//     }
+// }
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ///////////////////////////////////  TO FETCH LIST OF CHAMPION ID'S, THESE CAN BE USED TO SEARCH CHAMPIONS AND FETCH ALL THE DATA   //////////////////////////
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+fetch(championDataUrl)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Extract champion names from the response
+        champions = Object.keys(data.data).map(championKey => data.data[championKey].id);
+
+        // Now 'champions' is an array containing all the champion id's
+        // console.log(champions);
+
+        // Call the loop function here or use champions as needed
+        populateSelect();
+    })
+    .catch(error => console.error("Error fetching data:", error));
+
+function populateSelect() {
+    const selectElement = document.getElementById('championSelect');
+
+    // Loop through each champion name in the 'champions' array and create an option element
+    champions.forEach(championName => {
+        const optionElement = document.createElement('option');
+        optionElement.value = championName; // Set the value attribute if needed
+        optionElement.text = championName;
+        selectElement.appendChild(optionElement);
+    });
+}
+
