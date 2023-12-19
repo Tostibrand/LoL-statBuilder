@@ -57,20 +57,19 @@ body {
     border: 3px solid black;
 }
 
-.championSearch {
-    width: 100px;
+.championSelect {
+    width: 103px;
     text-align: center;
 }
 
 .lvlIndicator {
-    margin-top: 141px;
-    margin-left: 219px;
+    margin-top: 144px;
+    margin-left: 215px;
     position: absolute;
     height: 20px;
     border: 1px solid green;
     /* border-radius: 50%; */
-    font-size: 18px;
-    font-weight: 900;
+    font-size: 16px;
     color: white;
     text-align: center;
     font-size: 12px;
@@ -118,14 +117,13 @@ body {
 
 .hp,
 .mana {
-    font-size: 10px;
-    font-weight: 900;
+    font-size: 14px;
     text-align: center;
 }
 
 .hp {
     /* H:W ratio 1:22 */
-    height: 11px;
+    height: 16px;
     width: 270px;
     border: 1px solid green;
     margin-left: 26px;
@@ -137,7 +135,7 @@ body {
 .mana {
     /* H:W ratio 1:22 */
     /*  */
-    height: 11px;
+    height: 16px;
     width: 270px;
     border: 1px solid green;
     margin-left: 26px;
