@@ -2,6 +2,10 @@ const version = '13.24.1';
 const baseUrl = `https://ddragon.leagueoflegends.com/cdn/${version}`;
 const championDataUrl = `${baseUrl}/data/en_US/champion.json`;
 
+// -----------------------------------------------------------------
+///////////////////////////////     GLOBALLY DECLARED VARIABLES      /////////////////////////////////////
+// -----------------------------------------------------------------
+// per level stats
 let hpperlevel = null;
 let mpperlevel = null;
 let armorperlevel = null;
@@ -12,21 +16,27 @@ let critperlevel = null;
 let attackdamageperlevel = null;
 let attackspeedperlevel = null;
 let championLevel = null;
-
+// at selected level stats
 let hpatlevel = null;
 let mpatlevel = null;
 let armoratlevel = null;
 let spellblockatlevel = null;
 let attackdamageatlevel = null;
 let attackspeedatlevel = null;
-
+let hpregenatlevel = null;
+let mpregenatlevel = null;
+// base stats
 let hpbase = null;
 let mpbase = null;
 let armorbase = null;
 let spellblockbase = null;
 let attackdamagebase = null;
 let attackspeedbase = null;
-
+let hpregenbase = null;
+let mpregenbase = null;
+// -----------------------------------------------------------------
+////////////////////////////////////////////////////////////////////
+// -----------------------------------------------------------------
 
 
 
@@ -51,48 +61,18 @@ async function fetchData(championName, statKey, element) {
                 break;
             case "attackspeed": attackspeedbase = stat;
                 break;
+            case "mpregen": mpregenbase = stat;
+                break;
+            case "hpregen": hpregenbase = stat;
+                break;
         }
     } catch (error) {
         console.error('Error fetching champion data:', error);
     }
 }
-
-
-// ------------------------------------------------------------TEST
-// 
-// async function fetchChampionStatPerLevel(championName, statKey) {
-//     try {
-//         const response = await fetch(championDataUrl);
-//         const data = await response.json();
-//         const stat = data.data[championName].stats[statKey];
-//         console.log(stat);
-
-//         // Assign the stat to the corresponding variable based on statKey
-//         switch (statKey) {
-//             case 'hpperlevel':
-//                 hpperlevel = stat;
-//                 break;
-//             case 'mpperlevel':
-//                 mpperlevel = stat;
-//                 break;
-//             // Add more cases if needed for other stats
-//         }
-//     } catch (error) {
-//         console.error('Error fetching champion data:', error);
-//     }
-// }
-
-// Example usage:
-// await fetchChampionStatPerLevel('ChampionName', 'hpperlevel');
-// await fetchChampionStatPerLevel('ChampionName', 'mpperlevel');
-
-// ------------------------------------------------------------TEST
-// 
-// fetch data per lvl
-
-
-
-
+// -----------------------------------------------------------------
+///////////////////////////////////      PER LEVEL STATS     ////////////////////////////////
+// -----------------------------------------------------------------
 async function fetchDataPerlvl(championName, statKey) {
     try {
         const response = await fetch(championDataUrl);
@@ -183,6 +163,35 @@ async function fetch_attackspeedperlevel(championName) {
         console.error('Error fetching champion data:', error);
     }
 }
+async function fetch_hpregenperlevel(championName) {
+    try {
+        const response = await fetch(championDataUrl);
+        const data = await response.json();
+        const stat = data.data[championName].stats.hpregenperlevel;
+        console.log(stat);
+        hpregenperlevel = stat;
+
+
+    } catch (error) {
+        console.error('Error fetching champion data:', error);
+    }
+}
+async function fetch_mpregenperlevel(championName) {
+    try {
+        const response = await fetch(championDataUrl);
+        const data = await response.json();
+        const stat = data.data[championName].stats.mpregenperlevel;
+        console.log(stat);
+        mpregenperlevel = stat;
+
+
+    } catch (error) {
+        console.error('Error fetching champion data:', error);
+    }
+}
+// -----------------------------------------------------------------
+////////////////////////////       CHAMPION ABILITY ICONS       ////////////////////////
+// -----------------------------------------------------------------
 
 
 
@@ -239,6 +248,9 @@ function fetchChampionSquareAsset(championName) {
     const championIcon = document.getElementById('championIcon');
     championIcon.src = `${baseUrl}/img/champion/${championName}.png`;
 }
+// -----------------------------------------------------------------
+///////////////////      MAIN FUNCTION    ////////////////////////////
+// -----------------------------------------------------------------
 
 function fetchChampionStats(championName) {
     fetchData(championName, 'movespeed', movespeed);
@@ -260,6 +272,8 @@ function fetchChampionStats(championName) {
     fetch_spellblockperlevel(championName);
     fetch_attackdamageperlevel(championName);
     fetch_attackspeedperlevel(championName);
+    fetch_hpregenperlevel(championName);
+    fetch_mpregenperlevel(championName);
 
 
     fetchDataPerlvl(championName, 'mpperlevel');
@@ -277,6 +291,9 @@ function fetchChampionStats(championName) {
     fetchE_AbilityIconPath(championName, 'full');
     fetchR_AbilityIconPath(championName, 'full');
 }
+// -----------------------------------------------------------------
+/////////////////////////     EVENTLISTENERS      /////////////////////////////////
+// -----------------------------------------------------------------
 
 const input = document.querySelector('#championInput');
 input.addEventListener('click', () => searchChampion());
@@ -296,7 +313,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Call your function with the selected value
         fetchChampionLevel(selectedLevel);
     });
-
+    // -----------------------------------------------------------------
+    ////////////////////////         CALCULATIONS FOR PER LEVEL STATS    /////////////////////////////
+    // -----------------------------------------------------------------
     // Your function to fetch and display champion icon
     function fetchChampionLevel(championLevel) {
         // Replace this with your logic to fetch and display the champion level
@@ -311,17 +330,26 @@ document.addEventListener('DOMContentLoaded', function () {
         attackspeedatlevel = attackspeedbase * (1 + (attackspeedperlevel / 100) * (championLevel - 1));
         roundedattackspeedatlevel = attackspeedatlevel.toFixed(2);
 
+        hpregenatlevel = (hpregenbase + (hpregenperlevel * championLevel) - hpregenperlevel);
+        roundedhpregenatlevel = hpregenatlevel.toFixed(1);
+        mpregenatlevel = (mpregenbase + (mpregenperlevel * championLevel) - mpregenperlevel);
+        roundedmpregenatlevel = mpregenatlevel.toFixed(1);
+
         hp.innerHTML = hpatlevel;
         mana.innerHTML = mpatlevel;
         armor.innerHTML = armoratlevel;
         magicresist.innerHTML = spellblockatlevel;
         attackdamage.innerHTML = attackdamageatlevel;
         attackspeed.innerHTML = roundedattackspeedatlevel;
+        HPregen.innerHTML = roundedhpregenatlevel;
+        MPregen.innerHTML = roundedmpregenatlevel;
 
 
     }
 });
-
+// -----------------------------------------------------------------
+/////////////////////////////     HELPERS    //////////////////////////////
+// -----------------------------------------------------------------
 
 function searchChampion() {
     const championName = prompt('Please enter a champion name');
