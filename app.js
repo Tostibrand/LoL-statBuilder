@@ -308,6 +308,7 @@ document.addEventListener('DOMContentLoaded', function () {
     championSelect.addEventListener('change', function () {
         const selectedchampion = championSelect.value;
         championName = selectedchampion;
+        lvlIndicator.value = '1';
 
         fetchChampionStats(championName);
 
