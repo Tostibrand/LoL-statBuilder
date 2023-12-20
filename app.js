@@ -205,7 +205,7 @@ async function fetchPassiveIconPath(championName, statKey) {
         console.error('Error fetching champion data:', error);
     }
 }
-// Abilities icon path
+// Abilities icon path MAIN FUNCTION
 async function fetchAbilityIconPath(championName, spellIndex, statKey, iconElementId) {
     try {
         const individualChampionDataUrl = `${baseUrl}/data/en_US/champion/${championName}.json`;
@@ -245,6 +245,23 @@ function fetchChampionSquareAsset(championName) {
 
         const championIcon = document.getElementById('championIcon');
         championIcon.src = "./docs/assets/images/ChampionSquare.webp"
+
+        const P = document.getElementById('championPassiveIcon');
+        P.src = "./docs/assets/images/T.jpg"
+
+        const Q = document.getElementById('championQIcon');
+        Q.src = "./docs/assets/images/O.jpg"
+
+        const W = document.getElementById('championWIcon');
+        W.src = "./docs/assets/images/S.jpg"
+
+        const E = document.getElementById('championEIcon');
+        E.src = "./docs/assets/images/T.jpg"
+
+        const R = document.getElementById('championRIcon');
+        R.src = "./docs/assets/images/i.jpg"
+
+
     } else {
         const championIcon = document.getElementById('championIcon');
         championIcon.src = `${baseUrl}/img/champion/${championName}.png`;
