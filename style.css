@@ -105,17 +105,50 @@ body {
     text-align: center;
 }
 
+.championQIcon {
+    animation: fadeIn 4s;
+}
+
+.championWIcon {
+    animation: fadeIn 6s;
+}
+
+.championEIcon {
+    animation: fadeIn 8s;
+}
+
+.championRIcon {
+    animation: fadeIn 8s;
+}
+
+.championPassiveIcon {
+    animation: fadeIn 2s;
+}
+
+
 .championQIcon,
 .championWIcon,
 .championEIcon,
 .championRIcon,
 .championPassiveIcon {
+    /* animation: fadeIn 5s; */
     margin-left: 10px;
-    border: 1.5px solid gold;
+    /* border: 1.5px solid gold; */
     height: 40px;
     width: 40px;
     text-align: center;
 }
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 
 .hp,
 .mana {
