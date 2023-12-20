@@ -241,8 +241,14 @@ async function fetchR_AbilityIconPath(championName, statKey) {
 
 // Champion icon path
 function fetchChampionSquareAsset(championName) {
-    const championIcon = document.getElementById('championIcon');
-    championIcon.src = `${baseUrl}/img/champion/${championName}.png`;
+    if (championName == "default") {
+
+        const championIcon = document.getElementById('championIcon');
+        championIcon.src = "./docs/assets/images/ChampionSquare.webp"
+    } else {
+        const championIcon = document.getElementById('championIcon');
+        championIcon.src = `${baseUrl}/img/champion/${championName}.png`;
+    }
 }
 // -----------------------------------------------------------------
 ///////////////////      MAIN FUNCTION    ////////////////////////////
@@ -309,6 +315,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedchampion = championSelect.value;
         championName = selectedchampion;
         lvlIndicator.value = '1';
+        if (championSelect.value == "default") {
+            const championIcon = document.getElementById('championIcon');
+            championIcon.src = "./docs/assets/images/ChampionSquare.webp"
+        }
 
         fetchChampionStats(championName);
 
