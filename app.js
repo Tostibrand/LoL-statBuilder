@@ -443,3 +443,108 @@ fetch(itemDataUrl)
         // Call the loop function here or use champions as needed
     })
     .catch(error => console.error("Error fetching data:", error));
+
+
+
+
+
+
+
+
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+function removeTagsAndSlashes(inputString) {
+    // Create a regular expression to match <, >, and /
+    const pattern = /[<>\/]/g;
+
+    // Replace the matched characters with an empty string
+    const filteredString = inputString.replace(pattern, '');
+
+    return filteredString;
+}
+
+// Example usage
+// const originalString = '<example>Some / text with <tags>.</example>';
+const originalString = "<mainText><stats><attention>300</attention> Health<br><attention>60</attention> Magic Resist<br><attention>10</attention> Ability Haste</stats><br><li><passive>Unmake:</passive> <status>Curse</status> nearby enemy champions, reducing their Magic Resist. For each <status>Cursed</status> enemy, gain Magic Resist.</mainText><br>";
+
+const filteredString = removeTagsAndSlashes(originalString);
+
+console.log('Original String:', originalString);
+console.log('Filtered String:', filteredString);
+
+function removeWords(str, wordsToRemove) {
+    // Create a regular expression with the provided words and global flag
+    var regex = new RegExp(wordsToRemove.join("|"), "gi");
+
+    // Replace occurrences of the words with an empty string
+    var modifiedString = str.replace(regex, "");
+
+    return modifiedString;
+}
+
+// Example usage
+const original2String = filteredString;
+const wordsToRemove = ["attention", "stats", "br", "mainText"];
+const modifiedString = removeWords(original2String, wordsToRemove);
+console.log(modifiedString);
+
+
+
+function parseStats(inputString) {
+    // Define an object to store the extracted values
+    const result = {};
+
+    // Use regular expressions to find matches for Health, Magic Resist, and Ability Haste
+    const healthMatch = inputString.match(/(\d+)\s*Health/i);
+    const magicResistMatch = inputString.match(/(\d+)\s*Magic Resist/i);
+    const abilityHasteMatch = inputString.match(/(\d+)\s*Ability Haste/i);
+    const armorMatch = inputString.match(/(\d+)\s*Armor/i);
+
+    // Assign matched values to the result object
+    if (healthMatch) {
+        result.Health = parseInt(healthMatch[1], 10);
+    }
+
+    if (magicResistMatch) {
+        result.MagicResist = parseInt(magicResistMatch[1], 10);
+    }
+
+    if (abilityHasteMatch) {
+        result.AbilityHaste = parseInt(abilityHasteMatch[1], 10);
+    }
+    if (armorMatch) {
+        result.Armor = parseInt(armorMatch[1], 10);
+    }
+
+    // Return the result object
+    return result;
+}
+
+// Example usage
+const resultObject = parseStats(modifiedString);
+console.log(resultObject);
+
+
+// Sample array of items with name and description properties
+
+// Function to print descriptions for each item
+function printItemDescriptions(itemArray) {
+    for (let index = 0; index < itemArray.length; index++) {
+        const itemName = itemArray[index].name;
+        const itemDescription = itemArray[index].description;
+
+        console.log(`${itemName}: ${itemDescription}`);
+    }
+}
+
+// Call the function with the items array
+// printItemDescriptions(items);
+
